@@ -54,6 +54,7 @@ export class GraphiQL extends React.PureComponent {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
       },
       body: JSON.stringify(graphQLParams),
       credentials: 'include',
