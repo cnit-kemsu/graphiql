@@ -48,15 +48,24 @@ export class GraphiQL extends React.PureComponent {
     this.fetch = this.fetch.bind(this);
   }
 
-  fetch(graphQLParams) {
+  fetch({ query, variables, operationName }) {
+    const formdata = new FormData();
+    // function appendToForm([key, value]) {
+    //   formdata.append(key, typeof value === 'object' ? JSON.stringify(value) : value);
+    // }
+    // Object.entries(graphQLParams).forEach(appendToForm);
+    formdata.append('query', query);
+    if (variables !== undefined) formdata.append('variables', JSON.stringify(variables));
+    if (operationName !== undefined) formdata.append('operationName', operationName);
+
     return fetch(this.props.url, {
       method: 'post',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        //'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest'
       },
-      body: JSON.stringify(graphQLParams),
+      body: formdata,
       credentials: 'include',
     }).then(function (response) {
       return response.text();
