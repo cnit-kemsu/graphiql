@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { GraphiQL } from '../src/comps/GraphiQL';
+import { GraphiQL } from '../src/GraphiQL';
 
 function App() {
 

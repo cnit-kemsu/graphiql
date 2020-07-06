@@ -1,7 +1,5 @@
-import fs from 'fs';
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import { DuplicatesPlugin } from 'inspectpack/plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 
 export default function (env, { mode = 'development' }) {
@@ -9,11 +7,10 @@ export default function (env, { mode = 'development' }) {
 
     devtool: 'inline-source-map',
     mode: 'development',
-    cache: true,
-
     target: 'web',
 
-    entry: './test/app.js',
+    entry: './example/index.js',
+
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
@@ -27,10 +24,9 @@ export default function (env, { mode = 'development' }) {
           include: [
             'src',
             'node_modules/@kemsu',
-            'test',
+            'example',
           ].map(_ => path.resolve(__dirname, _)),
-          loader: 'babel-loader',
-          options: fs.readFileSync('.babelrc') |> JSON.parse
+          loader: 'babel-loader'
 
         }, {
 
@@ -51,12 +47,13 @@ export default function (env, { mode = 'development' }) {
     plugins: [
      new HtmlWebpackPlugin({
         title: 'graphiql',
-        template: './test/index.html'
+        template: './example/index.html'
       }),
-      new DuplicatesPlugin({}),
-      new CopyPlugin([
-        { from: './node_modules/graphiql/graphiql.css', to: '' }
-      ])
+      new CopyPlugin({
+        patterns: [
+          { from: './node_modules/graphiql/graphiql.css', to: '' }
+        ]
+      })
     ],
 
     optimization: {
@@ -77,7 +74,7 @@ export default function (env, { mode = 'development' }) {
       proxy: {
         '/api': 'http://localhost:8080/graphql'
       },
-      contentBase: './test/server',
+      contentBase: './example/server',
       historyApiFallback: true,
       watchContentBase: true,
       port: 3000
@@ -89,7 +86,7 @@ export default function (env, { mode = 'development' }) {
 
     target: 'web',
 
-    entry: './src/comps/GraphiQL.js',
+    entry: './src/GraphiQL.js',
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'index.js',
@@ -104,7 +101,6 @@ export default function (env, { mode = 'development' }) {
           test: /\.js$/,
           include: path.resolve(__dirname, 'src'),
           loader: 'babel-loader',
-          options: fs.readFileSync('.babelrc') |> JSON.parse
         },
         {
           test: /\.flow$/,
@@ -121,10 +117,11 @@ export default function (env, { mode = 'development' }) {
     ],
 
     plugins: [
-      new DuplicatesPlugin({}),
-      new CopyPlugin([
-        { from: './node_modules/graphiql/graphiql.css', to: '' }
-      ])
+      new CopyPlugin({
+        patterns: [
+          { from: './node_modules/graphiql/graphiql.css', to: '' }
+        ]
+      })
     ]
 
   };
