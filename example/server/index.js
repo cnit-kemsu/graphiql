@@ -12,7 +12,7 @@ app.use(
   '/graphql',
   upload.none(),
   graphqlHTTP(async () => {
-    const db = await sqlite.open('./example/localdb');
+    const db = await sqlite.open('./example/server/localdb');
     return {
       schema,
       context: {
